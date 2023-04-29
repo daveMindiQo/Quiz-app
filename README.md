@@ -6,7 +6,7 @@ This project is written by HTML, CSS and Javascript .
 
 ## Result:
 
-![img](./images/project-1.png)
+![img](./images/project.png)
 ------
 ![img](./images/project-2.png)
 ------
