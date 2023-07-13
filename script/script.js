@@ -105,11 +105,9 @@ const questionElement = document.getElementById("question");
 const answerButton = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("btn-next");
 
-let score = 0;
 
 // Start Quiz
 function startQuiz() {
-    score = 0;
     nextButton.innerHTML = "Další";
     showQuestion();
 }
@@ -150,11 +148,13 @@ function selectAnswer(e) {
     if (isCorrect) {
         selectedbtn.classList.add("correct");
         let currentQuestionIndex = localStorage.getItem('currentQuestionIndex');
+        let score = Number(localStorage.getItem('score'));
 
         if (currentQuestionIndex == 10)
             score += 100;
         else
             score += 50;
+        localStorage.setItem('score', score);
     }
     else {
         selectedbtn.classList.add("wrong");
@@ -171,6 +171,7 @@ function selectAnswer(e) {
 // Show Score
 function showScore() {
     resetState();
+    let score = localStorage.getItem('score');
     questionElement.innerHTML = "Dosáhl jsi " + score + " bodů, pro odměnu a kontrolu jdi za strejdou Davidem :-).";
 }
 
@@ -217,7 +218,6 @@ function startApp() {
             localStorage.setItem('currentQuestionIndex', 0);
             localStorage.setItem('score', 0);
         }
-        score = 0;
         questionElement.innerHTML = "Ukaž co dokážeš.<br /> Za každou správnou odpověď dostaneš 50bodů.<br />Za každý bod po skončení kvízu dostaneš jednu korunu. <br /> Kvíz je možné hrát jen jednou!!!";
         nextButton.innerHTML = "Start";
         nextButton.style.display = "block";
