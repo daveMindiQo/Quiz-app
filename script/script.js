@@ -1,94 +1,104 @@
 const questions =[
     {
-        question:"Javascript is an _______ language?",
+        question:"Jaké je datum narození tvé mamky?",
         answers:[
-            {text:"Object-Oriented",correct:true},
-            {text:"Object-Based",correct:false},
-            {text:"Procedural",correct:false},
-            {text:"None of the above",correct:false}
+            {text:"31.5.1982",correct:false},
+            {text:"31.5.1983",correct:false},
+            {text:"30.5.1983",correct:true},
+            {text:"30.5.1984",correct:false}
         ]
     },
     {
-        question:"Which of the following keywords is used to define a variable in Javascript?",
+        question:"Jaké bylo příjmení tvé mamky za svobodna?",
         answers:[
-            {text:"var",correct:false},
-            {text:"let",correct:false},
-            {text:"Both A and B",correct:true},
-            {text:"None of the above",correct:false}
+            {text:"Prudičová",correct:false},
+            {text:"Tomková",correct:true},
+            {text:"Pazderová",correct:false},
+            {text:"Tomková-Prudičová",correct:false}
         ]
     },
     {
-        question:"Which of the following methods is used to access HTML elements using Javascript?",
+        question:"Jak se jmenuje sourozenec zetě tojí babičky?",
         answers:[
-            {text:"getElementById()",correct:false},
-            {text:"getElementsByClassName()",correct:false},
-            {text:"Both A and B",correct:true},
-            {text:"None of the above",correct:false}
+            {text:"Robert",correct:false},
+            {text:"Ivan",correct:false},
+            {text:"Jitka",correct:false},
+            {text:"David",correct:true}
         ]
     },
     {
-        question:"Upon encountering empty statements, what does the Javascript Interpreter do?",
+        question:"Jaký je výsledek toho příkladu: 333:3+(-40·2)-(-4²)-4",
         answers:[
-            {text:"Throws an error",correct:false},
-            {text:"Ignores the statements",correct:true},
-            {text:"Gives a warning",correct:false},
-            {text:"None of the above",correct:false}
+            {text:"0",correct:false},
+            {text:"1",correct:false},
+            {text:"11",correct:true},
+            {text:"100",correct:false}
         ]
     },
     {
-        question:"Which of the following methods can be used to display data in some form using Javascript?",
+        question:"Která hora je nejvyšší v České republice",
         answers:[
-            {text:"document.write()",correct:false},
-            {text:"console.log()",correct:false},
-            {text:"window.alert()",correct:false},
-            {text:"All of the above",correct:true}
+            {text:"Lysá hora",correct:false},
+            {text:"Sněžka",correct:true},
+            {text:"Mount Everest",correct:false},
+            {text:"Smrk",correct:false}
         ]
     },
     {
-        question:"How can a datatype be declared to be a constant type?",
+        question:"Vyber správnou možnost do následující věty: Spatřil jsem ve vodě ___ a na stromě ___.",
         answers:[
-            {text:"const",correct:true},
-            {text:"var",correct:false},
-            {text:"let",correct:false},
-            {text:"constant",correct:false}
+            {text:"vír, víra",correct:false},
+            {text:"vír, výra",correct:true},
+            {text:"výr, víra",correct:false},
+            {text:"výr, výra",correct:false}
         ]
     },
     {
-        question:"When the switch statement matches the expression with the given labels, how is the comparison done?",
+        question:"Celý život se inspiroval zážitky z dětství a venkovského života v rodných Hrusicích nedaleko Prahy. Jistě si vzpomeneš na jeho kocoura Mikeše",
         answers:[
-            {text:"Both the datatype and the result of the expression are compared.",correct:true},
-            {text:"Only the datatype of the expression is compared.",correct:false},
-            {text:"Only the value of the expression is compared.",correct:false},
-            {text:"None of the above.",correct:false}
+            {text:"M. Aleš",correct:false},
+            {text:"J. Lada",correct:true},
+            {text:"J. Karafiát",correct:false},
+            {text:"J. Čapek",correct:false}
         ]
     },
     {
-        question:"What does the ‘toLocateString()’ method do in JS?",
+        question:"Vyber možnost, která je desetkrát menší než 1,2t.",
         answers:[
-            {text:"Returns a localised object representation.",correct:false},
-            {text:"Returns a parsed string.",correct:false},
-            {text:"Returns a localized string representation of an object.",correct:true},
-            {text:"None of the above.",correct:false}
+            {text:"1,2kg",correct:false},
+            {text:"120kg",correct:true},
+            {text:"1,2g",correct:false},
+            {text:"1,2mg",correct:false}
+        ],
+    },
+    {
+        question:"Kdy má svátek tvůj děda nebo taťka?",
+        answers:[
+            {text:"25.června",correct:true},
+            {text:"27.srpna",correct:false},
+            {text:"27.6.",correct:false},
+            {text:"25.července",correct:false}
         ]
     },
     {
-        question:"Which function is used to serialize an object into a JSON string in Javascript?",
+        question:"Před školou v Velkém Újezdě máte bystu, koho je?",
         answers:[
-            {text:"stringify",correct:true},
-            {text:"parse",correct:false},
-            {text:"convert",correct:false},
-            {text:"None of the above.",correct:false}
+            {text:"Vladimíra Železného",correct:false},
+            {text:"Emila Zátopka",correct:false},
+            {text:"Emila Navrátila",correct:false},
+            {text:"Vladimíra Navrátila",correct:true}
         ]
     },
     {
-        question:"Which of the following is not a Javascript framework?",
+        question:"Vyber zápis čísla π, který mu bude nejblíže",
         answers:[
-            {text:"Node",correct:false},
-            {text:"Vue",correct:false},
-            {text:"React",correct:false},
-            {text:"Cassandra",correct:true}
+            {text:"3,14159264358979323846",correct:false},
+            {text:"3,14159265358979322846",correct:false},
+            {text:"3,14159265358979323846",correct:true},
+            {text:"3,14159265358679323846",correct:false}
         ]
     }
+    
 ];
 
 const questionElement = document.getElementById("question");
@@ -216,10 +226,10 @@ function startApp()
 
     }else
     {
-        if(localStorage.getItem('currentQuestionIndex') == "undefined")
+        if(localStorage.getItem('currentQuestionIndex') == "undefined" || localStorage.getItem('currentQuestionIndex') == null )
             localStorage.setItem('currentQuestionIndex', 0);
         score = 0;
-        questionElement.innerHTML = "Ukaž co dokážeš.<br /> Za každou správnou odpověď  ";
+        questionElement.innerHTML = "Ukaž co dokážeš.<br /> Za každou správnou odpověď dostaneš 50bodů.<br />Za každý bod po skončení kvízu dostaneš jednu korunu. <br /> Kvíz je možné hrát jen jednou!!!";
         nextButton.innerHTML = "Start";
         nextButton.style.display = "block";
 
