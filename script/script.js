@@ -95,15 +95,13 @@ const questionElement = document.getElementById("question");
 const answerButton = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("btn-next");
 
-let currentQuestionIndex = 0;
 let score = 0;
 
 // Start Quiz
 function startQuiz()
 {
-    currentQuestionIndex = 0;
     score = 0;
-    nextButton.innerHTML = "Next";
+    nextButton.innerHTML = "Další";
     showQuestion();
 }
 
@@ -111,6 +109,7 @@ function startQuiz()
 function showQuestion()
 {
     resetState();
+    let currentQuestionIndex = localStorage.getItem('currentQuestionIndex');
     let currentQuestion= questions[currentQuestionIndex];
     let questionNo = currentQuestionIndex + 1;
     questionElement.innerHTML = questionNo+". "+currentQuestion.question;
@@ -174,7 +173,11 @@ function showScore()
 // Handle Next Button
 function handleNextButton()
 {
+    let currentQuestionIndex = localStorage.getItem('currentQuestionIndex');
+
     currentQuestionIndex++;
+    localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
+
     if(currentQuestionIndex < questions.length)
     {
         showQuestion();
@@ -185,13 +188,42 @@ function handleNextButton()
 }
 
 nextButton.addEventListener("click",() => {
-    if(currentQuestionIndex < questions.length )
+
+    let currentQuestionIndex = localStorage.getItem('currentQuestionIndex');
+
+    if(nextButton.innerHTML == "Start")
+    {
+        localStorage.setItem('start', true);
+        startQuiz()
+
+    }else if(currentQuestionIndex < questions.length )
     {
         handleNextButton();
     }
     else{
-        startQuiz();
+        startApp();
     }
 });
 
-startQuiz();
+
+// Start app
+function startApp()
+{
+
+    if(localStorage.getItem('start'))
+    {
+        startQuiz();
+
+    }else
+    {
+        if(localStorage.getItem('currentQuestionIndex') == "undefined")
+            localStorage.setItem('currentQuestionIndex', 0);
+        score = 0;
+        questionElement.innerHTML = "Ukaž co dokážeš.<br /> Za každou správnou odpověď  ";
+        nextButton.innerHTML = "Start";
+        nextButton.style.display = "block";
+
+    }
+}
+
+startApp();
