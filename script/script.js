@@ -81,7 +81,7 @@ const questions = [
         ]
     },
     {
-        question: "Před školou v Velkém Újezdě máte bystu, koho je?",
+        question: "Před školou ve Velkém Újezdě máte bystu, koho je?",
         answers: [
             { text: "Vladimíra Železného", correct: false },
             { text: "Emila Zátopka", correct: false },
