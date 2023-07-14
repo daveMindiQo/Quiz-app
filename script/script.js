@@ -18,7 +18,7 @@ const questions = [
         ]
     },
     {
-        question: "Jak se jmenuje sourozenec zetě tojí babičky?",
+        question: "Jak se jmenuje sourozenec zetě tvojí babičky?",
         answers: [
             { text: "Robert", correct: false },
             { text: "Ivan", correct: false },
@@ -27,7 +27,7 @@ const questions = [
         ]
     },
     {
-        question: "Jaký je výsledek toho příkladu: 333:3+(-40·2)-(-4²)-4",
+        question: "Jaký je výsledek tohoto příkladu: 333:3+(-40·2)-4·4-4",
         answers: [
             { text: "0", correct: false },
             { text: "1", correct: false },
@@ -54,7 +54,7 @@ const questions = [
         ]
     },
     {
-        question: "Celý život se inspiroval zážitky z dětství a venkovského života v rodných Hrusicích nedaleko Prahy. Jistě si vzpomeneš na jeho kocoura Mikeše",
+        question: "Celý život se inspiroval zážitky z dětství a venkovského života v rodných Hrusicích nedaleko Prahy. Jistě si vzpomeneš na jeho kocoura Mikeše.",
         answers: [
             { text: "M. Aleš", correct: false },
             { text: "J. Lada", correct: true },
@@ -105,6 +105,31 @@ const questionElement = document.getElementById("question");
 const answerButton = document.getElementById("answer-buttons");
 const nextButton = document.getElementById("btn-next");
 
+const botToken = '6380596547:AAEvimNI7vTCTIA_BRiwMwa0vQkFu8KHCSQ';
+const chatId = '437188901';
+
+// Function to send a message to Telegram
+function sendMessageToTelegram(message) {
+    const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+    const formData = new URLSearchParams();
+    formData.append('chat_id', chatId);
+    formData.append('text', message);
+
+    fetch(url, {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                console.log('Message sent to Telegram');
+            } else {
+                console.error('Error sending message to Telegram:', response.status);
+            }
+        })
+        .catch(error => {
+            console.error('Error sending message to Telegram:', error);
+        });
+}
 
 // Start Quiz
 function startQuiz() {
@@ -129,8 +154,13 @@ function showQuestion() {
             button.dataset.correct = answer.correct;
         }
         button.addEventListener("click", selectAnswer);
-
     });
+
+    if (localStorage.getItem('answered') != "null") {
+        console.log("showQuestion " + localStorage.getItem('answered').toString());
+        selectAnswer(null)
+    }
+
 }
 
 // Reset State
@@ -143,29 +173,53 @@ function resetState() {
 
 // Select Answer
 function selectAnswer(e) {
-    const selectedbtn = e.target;
+    let selectedbtn = null;
+
+    var index = localStorage.getItem('answered');
+    if (index == "null")
+        selectedbtn = e.target;
+    else
+        selectedbtn = answerButton.children[index];
+
     const isCorrect = selectedbtn.dataset.correct === "true";
+
+    let currentQuestionIndex = Number(localStorage.getItem('currentQuestionIndex'));
+
+    let score = Number(localStorage.getItem('score'));
     if (isCorrect) {
         selectedbtn.classList.add("correct");
-        let currentQuestionIndex = localStorage.getItem('currentQuestionIndex');
-        let score = Number(localStorage.getItem('score'));
 
-        if (currentQuestionIndex == 10)
-            score += 100;
-        else
-            score += 50;
-        localStorage.setItem('score', score);
+        if (e != null) {
+
+            if (currentQuestionIndex == 10)
+                score += 100;
+            else
+                score += 50;
+            localStorage.setItem('score', score);
+        }
     }
     else {
         selectedbtn.classList.add("wrong");
     }
+
+
+    let i = 0;
     Array.from(answerButton.children).forEach(button => {
         if (button.dataset.correct === "true") {
             button.classList.add("correct");
         }
         button.disabled = true;
+        if (button == selectedbtn)
+            localStorage.setItem('answered', i);
+        i++;
     });
+
     nextButton.style.display = "block";
+
+    if (isCorrect)
+        sendMessageToTelegram("✓ " + (currentQuestionIndex + 1).toString() + " - " + selectedbtn.innerHTML + " (" + localStorage.getItem('timestamp') + ": " + score.toString() + ")")
+    else
+        sendMessageToTelegram("× " + (currentQuestionIndex + 1).toString() + " - " + selectedbtn.innerHTML + " (" + localStorage.getItem('timestamp') + ": " + score.toString() + ")")
 }
 
 // Show Score
@@ -183,6 +237,7 @@ function handleNextButton() {
     localStorage.setItem('currentQuestionIndex', currentQuestionIndex);
 
     if (currentQuestionIndex < questions.length) {
+        localStorage.setItem('answered', null);
         showQuestion();
     }
     else {
@@ -206,7 +261,6 @@ nextButton.addEventListener("click", () => {
     }
 });
 
-
 // Start app
 function startApp() {
 
@@ -217,11 +271,32 @@ function startApp() {
         if (localStorage.getItem('currentQuestionIndex') == "undefined" || localStorage.getItem('currentQuestionIndex') == null) {
             localStorage.setItem('currentQuestionIndex', 0);
             localStorage.setItem('score', 0);
+            localStorage.setItem('answered', 'null');
+            
+            var browser = (function() {
+                var test = function(regexp) {return regexp.test(window.navigator.userAgent)}
+                switch (true) {
+                    case test(/edg/i): return "Microsoft Edge";
+                    case test(/trident/i): return "Microsoft Internet Explorer";
+                    case test(/firefox|fxios/i): return "Mozilla Firefox";
+                    case test(/opr\//i): return "Opera";
+                    case test(/ucbrowser/i): return "UC Browser";
+                    case test(/samsungbrowser/i): return "Samsung Browser";
+                    case test(/chrome|chromium|crios/i): return "Google Chrome";
+                    case test(/safari/i): return "Apple Safari";
+                    default: return "Other";
+                }
+            })();
+
+            localStorage.setItem('timestamp', new Date().toLocaleTimeString('en-US', {
+                hour12: false, hour: "numeric", minute: "numeric"
+            })+browser.toString());
         }
-        questionElement.innerHTML = "Ukaž co dokážeš.<br /> Za každou správnou odpověď dostaneš 50bodů.<br />Za každý bod po skončení kvízu dostaneš jednu korunu. <br /> Kvíz je možné hrát jen jednou!!!";
+        questionElement.innerHTML = "Ukaž co dokážeš.<br /> Za každou správnou odpověď dostaneš 50 bodů.<br />Za každý bod po skončení kvízu dostaneš jednu korunu. <br /> Kvíz je možné hrát jen jednou!!!";
         nextButton.innerHTML = "Start";
         nextButton.style.display = "block";
     }
 }
+
 
 startApp();
