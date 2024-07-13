@@ -1,5 +1,118 @@
 const questions = [
     {
+        question: "Mravenec lesní, včela medonosná a pilatka švestková patří mezi?",
+        answers: [
+            { text: "Blanokřídlé", correct: true },
+            { text: "Ploštice", correct: false },
+            { text: "Stejnokřídlé", correct: false },
+        ]
+    },
+    {
+        question: "Jak se jmenuje největší záliv na světě?",
+        answers: [
+            { text: "Hudsonův záliv", correct: false },
+            { text: "Bengálský záliv", correct: true },
+            { text: "Perský záliv", correct: false },
+        ]
+    },
+    {
+        question: "Kolik kostí je potřeba k ochočení vlka?",
+        answers: [
+            { text: "Nikdy nevíš.", correct: true },
+            { text: "1", correct: false },
+            { text: "2", correct: false },
+            { text: "3", correct: false },
+        ]
+    },
+    {
+        question: "Jak stará je planeta Země",
+        answers: [
+            { text: "5 miliard let", correct: false },
+            { text: "4.6 miliard let", correct: true },
+            { text: "6.4 miliard let", correct: false },
+        ]
+    },
+    {
+        question: "Jaký názor zastával Konfucius?",
+        answers: [
+            { text: "Stát je velká rodina, ve které všichni poslouchají svého vládce. A naopak vládce má pečovat o své poddané.", correct: true },
+            { text: "Neřiďte se nikdy žádnými předpisy, které by omezovaly vaši osobní svobodu, ale jen vlastní vůlí.", correct: false },
+            { text: "Každý občan by měl při svém jednání zohledňovat kritické myšlení a nevěřit slepě svému vládci.", correct: false },
+        ]
+    },
+    {
+        question: "Kolikrát se číslice 7 vyskytuje ve dvojmístných přirozených číslech?",
+        answers: [
+            { text: "21x", correct: false },
+            { text: "20x", correct: false },
+            { text: "19x", correct: true },
+        ]
+    },
+    {
+        question: "Do které rodiny jazyků patří slovo KÁVA?",
+        answers: [
+            { text: "afroasijské", correct: true },
+            { text: "románské", correct: false },
+            { text: "slovanské", correct: false },
+        ]
+    },
+    {
+        question: "V jakém roce byl Minecraft vytvořen?",
+        answers: [
+            { text: "2011", correct: false },
+            { text: "2013", correct: false },
+            { text: "2009", correct: true },
+            { text: "2007", correct: false },
+        ]
+    },
+    {
+        question: "Jak se nazývá psací materiál, který se používal zejména ve starověkém Egyptě?",
+        answers: [
+            { text: "papyrus", correct: true },
+            { text: "papír", correct: false },
+            { text: "hlíněná destička", correct: false },
+        ]
+    },
+    {
+        question: "Která teorie vzniku vesmíru se považuje za nejpravděpodobnější?",
+        answers: [
+            { text: "teorie náhodného vzniku", correct: false },
+            { text: "teorie velkého třesku", correct: true },
+            { text: "teorie stvoření života na Zemi", correct: false },
+            { text: "teorie černé díry", correct: false },
+        ]
+    },
+    {
+        question: "Který z těchto lektvarů v Minecraftu není?",
+        answers: [
+            { text: "Neviditelnost", correct: false },
+            { text: "Otrava", correct: false },
+            { text: "Hlad", correct: true },
+            { text: "Poškození", correct: false },
+        ]
+    },
+    {
+        question: "Kdo vyslal Cyrila a Metoděje na Moravu?",
+        answers: [
+            { text: "Byzantský císař", correct: true },
+            { text: "Papež", correct: false },
+            { text: "Nikdo, rozhodli se jít sami", correct: false },
+        ]
+    },
+    {
+        question: "A nakonec bonusová otázka za 100 bodů.<br/>Kdy vznikl internet?",
+        answers: [
+            { text: "V roce 1975 při vzniku operačních systémů Microsoft Windows, které založili Bill Gates a Paul Allen.", correct: false },
+            { text: "V roce 1979 jej vynalezl Steve Jobs, když založil společnost Apple.", correct: false },
+            { text: "V roce 1969 vznikl Arpanet, což považujeme za zárodek internetu, jak ho známe dnes.", correct: true },
+        ]
+    }
+
+    
+
+    
+
+    /* {
         question: "Jaké je datum narození tvé mamky?",
         answers: [
             { text: "31.5.1982", correct: false },
@@ -97,7 +210,7 @@ const questions = [
             { text: "3,14159265358979323846", correct: true },
             { text: "3,14159265358679323846", correct: false }
         ]
-    }
+    } */
 
 ];
 
@@ -191,7 +304,7 @@ function selectAnswer(e) {
 
         if (e != null) {
 
-            if (currentQuestionIndex == 10)
+            if (currentQuestionIndex == 12)
                 score += 100;
             else
                 score += 50;
@@ -216,11 +329,11 @@ function selectAnswer(e) {
 
     nextButton.style.display = "block";
 
-    if (isCorrect)
+     if (isCorrect)
         sendMessageToTelegram("✓ " + (currentQuestionIndex + 1).toString() + " - " + selectedbtn.innerHTML + " (" + localStorage.getItem('timestamp') + ": " + score.toString() + ")")
     else
         sendMessageToTelegram("× " + (currentQuestionIndex + 1).toString() + " - " + selectedbtn.innerHTML + " (" + localStorage.getItem('timestamp') + ": " + score.toString() + ")")
-}
+ }
 
 // Show Score
 function showScore() {
@@ -263,10 +376,8 @@ nextButton.addEventListener("click", () => {
 
 // Start app
 function startApp() {
-
     if (localStorage.getItem('start')) {
         startQuiz();
-
     } else {
         if (localStorage.getItem('currentQuestionIndex') == "undefined" || localStorage.getItem('currentQuestionIndex') == null) {
             localStorage.setItem('currentQuestionIndex', 0);
@@ -297,6 +408,5 @@ function startApp() {
         nextButton.style.display = "block";
     }
 }
-
 
 startApp();
